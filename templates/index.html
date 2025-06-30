@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finance Chatbot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+  background: '#1f2937',  // slate-800
+  surface: '#374151',     // slate-700
+  bot: '#4b5563',         // slate-600
+  user: '#3b82f6',        // blue-500
+  text: '#f9fafb'         // near white
+},
+          maxWidth: {
+            'chat': '960px' // Increased width for chat box
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background text-text flex flex-col h-screen font-sans">
+
+  <!-- Header -->
+  <header class="bg-surface text-white text-center p-4 shadow-md">
+    <h1 class="text-2xl font-semibold"> InvestiChat</h1>
+  </header>
+
+  <!-- Chat Area -->
+  <main class="flex-1 overflow-y-auto p-6 space-y-4 mx-auto w-full max-w-chat" id="chat-box">
+    <!-- Messages will appear here -->
+  </main>
+
+  <!-- Input Box -->
+  <footer class="bg-surface border-t border-gray-700 p-4">
+    <form id="chat-form" class="flex gap-2 mx-auto w-full max-w-chat">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type a message..."
+        class="flex-1 bg-background border border-gray-600 text-text rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        autocomplete="off"
+        required
+      />
+      <button
+        type="submit"
+        class="bg-user text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition"
+      >
+        Send
+      </button>
+    </form>
+  </footer>
+
+  <!-- Chat logic -->
+  <script>
+    const chatBox = document.getElementById("chat-box");
+    const chatForm = document.getElementById("chat-form");
+    const userInput = document.getElementById("user-input");
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      // User message
+      const userMsg = document.createElement("div");
+      userMsg.className = "text-right animate__animated animate__fadeIn";
+      userMsg.innerHTML = `
+        <div class="inline-block bg-user text-white px-4 py-3 rounded-2xl max-w-2xl shadow">
+          ${message}
+        </div>
+      `;
+      chatBox.appendChild(userMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      userInput.value = "";
+
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await response.json();
+
+        // Bot message
+        const botMsg = document.createElement("div");
+        botMsg.className = "text-left animate__animated animate__fadeIn";
+        botMsg.innerHTML = `
+  <div class="inline-block bg-bot text-white px-4 py-2 rounded-xl max-w-2xl shadow whitespace-pre-wrap leading-snug text-sm">
+    ${data.response}
+  </div>
+`;
+
+        chatBox.appendChild(botMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    });
+  </script>
+</body>
+</html>
