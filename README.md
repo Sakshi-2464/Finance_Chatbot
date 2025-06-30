@@ -1,5 +1,4 @@
-# Rule-Based Finance Chatbot (Flask + Python)
-
+## Rule-Based Finance Chatbot (Flask + Python)
 A rule-based chatbot that helps users understand financial concepts, create personalized investment plans, get portfolio recommendations, and check real-time stock prices. Built with Python and designed for integration into a Flask web app.
 
 ## Features
@@ -15,3 +14,4 @@ A rule-based chatbot that helps users understand financial concepts, create pers
 - **Live Stock Price Checker**  
   Uses Alpha Vantage and Twelve Data APIs to fetch real-time stock prices (India & US).
 
+## Demo
