@@ -15,3 +15,5 @@ A rule-based chatbot that helps users understand financial concepts, create pers
   Uses Alpha Vantage and Twelve Data APIs to fetch real-time stock prices (India & US).
 
 ## Demo
+https://github.com/user-attachments/assets/b75f9e0d-fe4a-4fe5-824c-7d7e53afc8dc
+
